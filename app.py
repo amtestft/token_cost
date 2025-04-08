@@ -32,11 +32,30 @@ model = st.selectbox("Seleziona modello:", ["gpt-4o", "gpt-3.5-turbo", "gpt-4.5-
 input_text = st.text_area("🔹 Prompt (input per il modello):", height=200)
 output_text = st.text_area("🔸 Completamento atteso (output del modello):", height=200)
 
-if st.button("Calcola costo"):
-    input_tokens = count_tokens(input_text, model)
-    output_tokens = count_tokens(output_text, model)
-    cost = estimate_cost(input_tokens, output_tokens, model)
+# Simulazione dataset: 1000 righe x 10 colonne => testo sintetico per testing
+dataset_text = "\n".join(["col1,col2,col3,...,col10"] + ["val1,val2,val3,...,val10" for _ in range(1000)])
 
-    st.markdown(f"**📊 Token Input:** {input_tokens}")
-    st.markdown(f"**📈 Token Output:** {output_tokens}")
-    st.markdown(f"**💵 Costo stimato:** ${cost} USD")
+if st.button("Calcola costo"):
+    # Agente 1 - raffinamento del prompt utente
+    agent1_input = input_text
+    agent1_output = "Prompt raffinato basato sull'intento utente."
+    agent1_cost = estimate_cost(count_tokens(agent1_input, model), count_tokens(agent1_output, model), model)
+
+    # Agente 2 - analisi dei dati SEO
+    agent2_input = agent1_output + "\n" + dataset_text
+    agent2_output = "Analisi dettagliata dei dati SEO con spiegazioni e insight."
+    agent2_cost = estimate_cost(count_tokens(agent2_input, model), count_tokens(agent2_output, model), model)
+
+    # Agente 3 - generazione Google Sheet (testo strutturato tipo slide deck)
+    agent3_input = agent2_output
+    agent3_output = "Slide 1: panoramica SEO\nSlide 2: pagine performanti\nSlide 3: raccomandazioni"
+    agent3_cost = estimate_cost(count_tokens(agent3_input, model), count_tokens(agent3_output, model), model)
+
+    total_cost = round(agent1_cost + agent2_cost + agent3_cost, 6)
+
+    st.subheader("📊 Costi stimati per ciascun agente")
+    st.markdown(f"**Agente 1 (Prompt Refiner):** ${agent1_cost}")
+    st.markdown(f"**Agente 2 (Analisi SEO):** ${agent2_cost}")
+    st.markdown(f"**Agente 3 (Output strutturato):** ${agent3_cost}")
+    st.markdown("---")
+    st.markdown(f"**💰 Costo totale stimato:** ${total_cost} USD")
