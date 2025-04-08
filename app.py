@@ -39,7 +39,7 @@ output_text = st.text_area("🔸 Completamento atteso (output del modello):", he
 # Caricamento CSV opzionale
 uploaded_file = st.file_uploader("📁 Carica un file CSV con dati SEO", type=["csv"])
 if uploaded_file:
-    df = pd.read_csv(uploaded_file, encoding='utf-8', errors='ignore')
+    df = pd.read_csv(uploaded_file, encoding='utf-8')
     st.markdown("Anteprima del dataset:")
     st.dataframe(df.head())
     dataset_text = df.to_csv(index=False)
