@@ -96,7 +96,7 @@ if st.button("Calcola costo"):
     # Agente 2 - analisi dei dati SEO
     agent2_input = agent1_output + "\n" + dataset_text
     with open('refined_prompt.txt', 'r') as file:
-        agent2_cost = file.read().replace('\n', '')
+        agent2_output = file.read().replace('\n', '')
     agent2_cost = estimate_cost(count_tokens(agent2_input, model), count_tokens(agent2_output, model), model)
 
     # Agente 3 - generazione Google Sheet (testo strutturato tipo slide deck)
