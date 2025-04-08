@@ -64,9 +64,9 @@ def display_token_stats(text, model="gpt-4o"):
         st.markdown(f"`{tok}` – {freq} volte")
 
 # Streamlit UI
-st.title("💰 Token & Costo Estimator per OpenAI API")
+st.title("💰 Token & Cost Estimator OpenAI API")
 
-model = st.selectbox("Seleziona modello:", ["gpt-4o", "gpt-3.5-turbo", "gpt-4.5-preview", "gpt-4o-mini"])
+model = st.selectbox("Model:", ["gpt-4o", "gpt-3.5-turbo", "gpt-4.5-preview", "gpt-4o-mini"])
 
 # Placeholder per prompt di esempio SEO
 with open('first_agent_prompt.txt', 'r') as file:
