@@ -25,9 +25,7 @@ Refined Output:
 > The tone should be motivational but technical. The plan must be realistic for a person who can study 10 hours a week.
 
 Rough User Prompt:
-“{user_prompt}”
+“Analizza i dati SEO per identificare le pagine più performanti e suggerire miglioramenti.”
 
 Enhanced Prompt:
 [Insert enhanced prompt here].
-
-Translated with DeepL.com (free version)
