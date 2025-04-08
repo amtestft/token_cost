@@ -73,8 +73,12 @@ model = st.selectbox("Seleziona modello:", ["gpt-4o", "gpt-3.5-turbo", "gpt-4.5-
 # Placeholder per prompt di esempio SEO
 with open('first_agent_prompt.txt', 'r') as file:
     example_prompt = file.read().replace('\n', '')
+
+with open('refined_prompt.txt', 'r') as file:
+        agent2_output = file.read().replace('\n', '')
+    
 input_text = st.text_area("🔹 Prompt (input per il modello):", value=example_prompt, height=200)
-output_text = st.text_area("🔸 Completamento atteso (output del modello):", height=200)
+output_text = st.text_area("🔸 Completamento atteso (output del modello):", value=agent2_output, height=200)
 
 # Caricamento CSV opzionale
 uploaded_file = st.file_uploader("📁 Carica un file CSV con dati SEO", type=["csv"])
