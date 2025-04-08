@@ -1,0 +1,9 @@
+Analyze the provided SEO dataset to identify the best-performing web pages in terms of organic traffic, click-through rates, and keyword rankings. The analysis should include:
+
+A ranking of the top 10 pages based on traffic volume
+
+Identification of common characteristics among high-performing pages (e.g., content length, keyword density, metadata quality)
+
+A list of underperforming pages with potential reasons (e.g., low keyword relevance, poor loading speed, missing meta tags)
+
+Actionable recommendations to improve visibility and performance of the underperforming pages Present the results in a clear, structured format (e.g., bullet points or short paragraphs). The tone should be analytical and concise. Assume the dataset is recent (last 3 months) and includes metrics such as impressions, clicks, position, URL, and query terms.
