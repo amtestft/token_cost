@@ -1,6 +1,8 @@
 import tiktoken
 import streamlit as st
 import pandas as pd
+from collections import Counter
+import html
 
 # Funzione per contare i token
 @st.cache_data
@@ -26,6 +28,43 @@ def estimate_cost(input_tokens, output_tokens, model="gpt-4o"):
     cost = input_tokens * rate["input"] + output_tokens * rate["output"]
     return round(cost, 6)
 
+def tokenize_text(text, model="gpt-4o"):
+    try:
+        enc = tiktoken.encoding_for_model(model)
+    except KeyError:
+        enc = tiktoken.get_encoding("cl100k_base")
+    tokens = enc.encode(text)
+    decoded_tokens = [enc.decode([t]) for t in tokens]
+    return tokens, decoded_tokens
+
+def render_tokenized_html(decoded_tokens):
+    # Mostra i token con sfondo colorato alternato
+    colors = ["#e0f7fa", "#fff9c4", "#fce4ec", "#f3e5f5", "#e8f5e9"]
+    html_out = ""
+    for i, token in enumerate(decoded_tokens):
+        color = colors[i % len(colors)]
+        safe_token = html.escape(token).replace(" ", "&nbsp;")
+        html_out += f'<span style=\"background-color:{color};padding:2px;margin:1px;display:inline-block;\">{safe_token}</span>'
+    return html_out
+
+def display_token_stats(text, model="gpt-4o"):
+    tokens, decoded = tokenize_text(text, model)
+    token_ids = tokens
+    num_tokens = len(tokens)
+    num_chars = len(text)
+    num_words = len(text.split())
+
+    freqs = Counter(decoded)
+    top_tokens = freqs.most_common(5)
+
+    st.markdown(f"**🔢 Token:** {num_tokens} | **📝 Parole:** {num_words} | **🔡 Caratteri:** {num_chars}")
+    st.markdown("**🧠 Token visualizzati:**")
+    st.markdown(render_tokenized_html(decoded), unsafe_allow_html=True)
+
+    st.markdown("**📊 Top 5 token più frequenti:**")
+    for tok, freq in top_tokens:
+        st.markdown(f"`{tok}` – {freq} volte")
+
 # Streamlit UI
 st.title("💰 Token & Costo Estimator per OpenAI API")
 
@@ -50,7 +89,8 @@ else:
 if st.button("Calcola costo"):
     # Agente 1 - raffinamento del prompt utente
     agent1_input = input_text
-    agent1_output = "Prompt raffinato basato sull'intento utente."
+    with open('refined_prompt.txt', 'r') as file:
+        agent1_output = file.read().replace('\n', '')
     agent1_cost = estimate_cost(count_tokens(agent1_input, model), count_tokens(agent1_output, model), model)
 
     # Agente 2 - analisi dei dati SEO
@@ -69,5 +109,8 @@ if st.button("Calcola costo"):
     st.markdown(f"**Agente 1 (Prompt Refiner):** ${agent1_cost}")
     st.markdown(f"**Agente 2 (Analisi SEO):** ${agent2_cost}")
     st.markdown(f"**Agente 3 (Output strutturato):** ${agent3_cost}")
+    st.markdown("---")
+    st.subheader("🔍 Tokenizzazione del Prompt Utente (Agente 1)")
+    display_token_stats(agent1_input, model)
     st.markdown("---")
     st.markdown(f"**💰 Costo totale stimato:** ${total_cost} USD")
