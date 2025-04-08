@@ -38,18 +38,16 @@ def tokenize_text(text, model="gpt-4o"):
     return tokens, decoded_tokens
 
 def render_tokenized_html(decoded_tokens):
-    # Mostra i token con sfondo colorato alternato
     colors = ["#e0f7fa", "#fff9c4", "#fce4ec", "#f3e5f5", "#e8f5e9"]
     html_out = ""
     for i, token in enumerate(decoded_tokens):
         color = colors[i % len(colors)]
         safe_token = html.escape(token).replace(" ", "&nbsp;")
-        html_out += f'<span style=\"background-color:{color};padding:2px;margin:1px;display:inline-block;\">{safe_token}</span>'
+        html_out += f'<span style="background-color:{color};padding:2px;margin:1px;display:inline-block;">{safe_token}</span>'
     return html_out
 
 def display_token_stats(text, model="gpt-4o"):
     tokens, decoded = tokenize_text(text, model)
-    token_ids = tokens
     num_tokens = len(tokens)
     num_chars = len(text)
     num_words = len(text.split())
@@ -75,12 +73,12 @@ with open('first_agent_prompt.txt', 'r') as file:
     example_prompt = file.read().replace('\n', '')
 
 with open('refined_prompt.txt', 'r') as file:
-        agent2_output = file.read().replace('\n', '')
-    
+    agent2_output = file.read().replace('\n', '')
+
 input_text = st.text_area("🔹 Prompt (input per il modello):", value=example_prompt, height=200)
 output_text = st.text_area("🔸 Completamento atteso (output del modello):", value=agent2_output, height=200)
 
-# Caricamento CSV opzionale
+# Controllo CSV o parametri simulati
 uploaded_file = st.file_uploader("📁 Carica un file CSV con dati SEO", type=["csv"])
 if uploaded_file:
     df = pd.read_csv(uploaded_file, encoding='utf-8')
@@ -88,7 +86,12 @@ if uploaded_file:
     st.dataframe(df.head())
     dataset_text = df.to_csv(index=False)
 else:
-    dataset_text = "\n".join(["col1,col2,col3,...,col10"] + ["val1,val2,val3,...,val10" for _ in range(1000)])
+    st.markdown("⚙️ Dataset non caricato. Puoi simulare le dimensioni qui sotto:")
+    num_rows = st.number_input("Numero di righe simulate", min_value=10, max_value=10000, value=1000, step=10)
+    num_cols = st.number_input("Numero di colonne simulate", min_value=1, max_value=100, value=10, step=1)
+    fake_header = ",".join([f"col{i+1}" for i in range(num_cols)])
+    fake_row = ",".join([f"val{i+1}" for i in range(num_cols)])
+    dataset_text = "\n".join([fake_header] + [fake_row for _ in range(num_rows)])
 
 if st.button("Calcola costo"):
     # Agente 1 - raffinamento del prompt utente
