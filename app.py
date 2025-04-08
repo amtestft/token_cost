@@ -1,5 +1,6 @@
 import tiktoken
 import streamlit as st
+import pandas as pd
 
 # Funzione per contare i token
 @st.cache_data
@@ -29,11 +30,21 @@ def estimate_cost(input_tokens, output_tokens, model="gpt-4o"):
 st.title("💰 Token & Costo Estimator per OpenAI API")
 
 model = st.selectbox("Seleziona modello:", ["gpt-4o", "gpt-3.5-turbo", "gpt-4.5-preview", "gpt-4o-mini"])
-input_text = st.text_area("🔹 Prompt (input per il modello):", height=200)
+
+# Placeholder per prompt di esempio SEO
+example_prompt = "Analizza i dati SEO per identificare le pagine più performanti e suggerire miglioramenti."
+input_text = st.text_area("🔹 Prompt (input per il modello):", value=example_prompt, height=200)
 output_text = st.text_area("🔸 Completamento atteso (output del modello):", height=200)
 
-# Simulazione dataset: 1000 righe x 10 colonne => testo sintetico per testing
-dataset_text = "\n".join(["col1,col2,col3,...,col10"] + ["val1,val2,val3,...,val10" for _ in range(1000)])
+# Caricamento CSV opzionale
+uploaded_file = st.file_uploader("📁 Carica un file CSV con dati SEO", type=["csv"])
+if uploaded_file:
+    df = pd.read_csv(uploaded_file)
+    st.markdown("Anteprima del dataset:")
+    st.dataframe(df.head())
+    dataset_text = df.to_csv(index=False)
+else:
+    dataset_text = "\n".join(["col1,col2,col3,...,col10"] + ["val1,val2,val3,...,val10" for _ in range(1000)])
 
 if st.button("Calcola costo"):
     # Agente 1 - raffinamento del prompt utente
