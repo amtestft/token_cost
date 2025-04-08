@@ -1,0 +1,6 @@
+slide,title,subtitle,content,key_points
+Slide 1,SEO Analysis Overview,Performance Summary of Organic Queries,"Analysis based on 10,000 queries from the last 3 months focusing on clicks, impressions, and CTR.",Top queries identified
+Slide 2,Top Performing Queries,Top 10 queries by traffic volume (clicks),"Queries such as 'lasagna recipes', 'pizza cookbook', and 'history recipes' showed highest click volumes.","Common keywords: recipes, lasagna, cookbook
+Slide 3,Traits of High-Performers,What makes top queries perform well?,"Strong intent match, high CTRs, high impressions, relevant content topics.",Well-aligned with user intent
+Slide 4,Underperforming Queries,Low CTRs despite high impressions,Queries like 'cookbook lasagna recipes' and 'best recipes pizza' had low CTRs and clicks despite visibility.,"Likely causes: vague phrasing, keyword overlap, poor metadata."
+Slide 5,Recommendations,Actions to Improve SEO Performance,"Improve metadata, content targeting, use rich snippets, consolidate pages, and optimize UX.",Align with search intent
