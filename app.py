@@ -95,11 +95,12 @@ if st.button("Calcola costo"):
 
     # Agente 2 - analisi dei dati SEO
     agent2_input = agent1_output + "\n" + dataset_text
-    agent2_output = "Analisi dettagliata dei dati SEO con spiegazioni e insight."
+    with open('refined_prompt.txt', 'r') as file:
+        agent2_cost = file.read().replace('\n', '')
     agent2_cost = estimate_cost(count_tokens(agent2_input, model), count_tokens(agent2_output, model), model)
 
     # Agente 3 - generazione Google Sheet (testo strutturato tipo slide deck)
-    agent3_input = agent2_output
+    agent3_input = agent2_output + "generate a csv file which rows are 'slides' (slide, 1, slide 2, etc.) and columns are fields of each slide that we want to populate with information coming from the analysis that you provided"
     agent3_output = "Slide 1: panoramica SEO\nSlide 2: pagine performanti\nSlide 3: raccomandazioni"
     agent3_cost = estimate_cost(count_tokens(agent3_input, model), count_tokens(agent3_output, model), model)
 
