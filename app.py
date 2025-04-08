@@ -32,7 +32,8 @@ st.title("💰 Token & Costo Estimator per OpenAI API")
 model = st.selectbox("Seleziona modello:", ["gpt-4o", "gpt-3.5-turbo", "gpt-4.5-preview", "gpt-4o-mini"])
 
 # Placeholder per prompt di esempio SEO
-example_prompt = "Analizza i dati SEO per identificare le pagine più performanti e suggerire miglioramenti."
+with open('first_agent_prompt.txt', 'r') as file:
+    example_prompt = file.read().replace('\n', '')
 input_text = st.text_area("🔹 Prompt (input per il modello):", value=example_prompt, height=200)
 output_text = st.text_area("🔸 Completamento atteso (output del modello):", height=200)
 
